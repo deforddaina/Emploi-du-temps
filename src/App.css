@@ -1,0 +1,408 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0f1e;
+  color: #e2e8f0;
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 50%, #1a1035 100%);
+}
+
+/* ===== HEADER ===== */
+.header {
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.sous-titre {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.btn-retour {
+  background: rgba(96,165,250,0.1);
+  border: 1px solid rgba(96,165,250,0.25);
+  color: #60a5fa;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-retour:hover {
+  background: rgba(96,165,250,0.2);
+}
+
+/* ===== CONTENU ===== */
+.contenu {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 28px 16px;
+}
+
+/* ===== LEGENDE ===== */
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.badge-legende {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ===== CARTE ===== */
+.carte {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.titre-section {
+  font-size: 16px;
+  font-weight: 700;
+  color: #93c5fd;
+  margin-bottom: 16px;
+}
+
+/* ===== LIGNE COURS ===== */
+.ligne-cours {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(59,130,246,0.07);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+}
+
+.info-cours {
+  flex: 1;
+}
+
+.nom-cours {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.detail-cours {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.btn-supprimer {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.btn-supprimer:hover {
+  background: rgba(239,68,68,0.25);
+}
+
+/* ===== FORMULAIRE ===== */
+.formulaire-ajout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.champ {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.champ:focus {
+  border-color: rgba(96,165,250,0.5);
+}
+
+.champ option {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+
+.ligne-champ {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ligne-champ label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.btn-ajouter {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border: none;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-ajouter:hover {
+  opacity: 0.9;
+}
+
+/* ===== PREFERENCES ===== */
+.preferences {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pref-item label {
+  display: block;
+  font-size: 14px;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.pref-item label strong {
+  color: #60a5fa;
+}
+
+.slider {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.1);
+  outline: none;
+  cursor: pointer;
+  accent-color: #6366f1;
+}
+
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #475569;
+  margin-top: 4px;
+}
+
+/* ===== BOUTON GENERER ===== */
+.btn-generer {
+  width: 100%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+  border: none;
+  color: white;
+  padding: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  box-shadow: 0 8px 32px rgba(99,102,241,0.35);
+}
+
+.btn-generer:hover {
+  opacity: 0.92;
+}
+
+/* ===== RESULTAT ===== */
+.resultat {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== ONGLETS ===== */
+.onglets {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.onglet {
+  position: relative;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #94a3b8;
+  padding: 10px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.onglet:hover {
+  background: rgba(255,255,255,0.08);
+  color: #e2e8f0;
+}
+
+.onglet.actif {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+}
+
+.badge-nb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ===== PLANNING ===== */
+.titre-jour {
+  font-size: 20px;
+  font-weight: 800;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.planning-jour {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.jour-vide {
+  text-align: center;
+  padding: 48px;
+  color: #475569;
+  font-size: 18px;
+}
+
+.bloc {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: transform 0.15s;
+}
+
+.bloc:hover {
+  transform: translateX(4px);
+}
+
+.bloc-heure {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.75;
+  white-space: nowrap;
+  min-width: 110px;
+}
+
+.bloc-label {
+  flex: 1;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.bloc-duree {
+  font-size: 11px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+/* ===== RESUME ===== */
+.resume {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+
+.resume-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 500px) {
+  .formulaire-ajout {
+    grid-template-columns: 1fr;
+  }
+  .bloc-heure {
+    min-width: 90px;
+    font-size: 11px;
+  }
+  .bloc-label {
+    font-size: 13px;
+  }
+}

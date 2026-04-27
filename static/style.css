@@ -1,0 +1,348 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #f0f4ff;
+    min-height: 100vh;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #f64f59 100%);
+    padding: 50px 20px;
+    text-align: center;
+    clip-path: ellipse(100% 80% at 50% 20%);
+    padding-bottom: 80px;
+}
+
+.hero .logo {
+    font-size: 4em;
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    color: white;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.hero p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+/* CONTAINER */
+.container {
+    max-width: 820px;
+    margin: -40px auto 40px auto;
+    padding: 0 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 30px rgba(102,126,234,0.12);
+    border-top: 4px solid #667eea;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.card-icon {
+    font-size: 1.8em;
+}
+
+.card-header h2 {
+    color: #333;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.card-desc {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+/* FORM */
+.form-row {
+    margin-bottom: 15px;
+}
+
+.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group label {
+    display: block;
+    color: #555;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e8ecff;
+    border-radius: 10px;
+    font-size: 0.95em;
+    color: #333;
+    background: #fafbff;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(102,126,234,0.1);
+}
+
+/* COURS ITEM */
+.cours-item {
+    background: linear-gradient(135deg, #f8f9ff, #fff);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #e8ecff;
+    position: relative;
+}
+
+.cours-item h3 {
+    color: #667eea;
+    font-size: 1em;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.cours-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* BOUTONS */
+.btn-ajouter {
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: 2px dashed #667eea;
+    border-radius: 12px;
+    color: #667eea;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.btn-ajouter:hover {
+    background: #667eea;
+    color: white;
+    border-style: solid;
+}
+
+.btn-supprimer {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #ffe8e8;
+    color: #e74c3c;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-supprimer:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-generer {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #667eea, #f64f59);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+}
+
+.btn-generer:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(102,126,234,0.5);
+}
+
+/* PLANNING PAGE */
+.planning-header {
+    background: linear-gradient(135deg, #667eea, #f64f59);
+    padding: 40px 20px;
+    text-align: center;
+    color: white;
+}
+
+.planning-header h1 {
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.planning-header p {
+    opacity: 0.85;
+    margin-top: 8px;
+}
+
+.planning-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* TABLEAU */
+.tableau-wrapper {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+
+.tableau-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tableau-wrapper th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 10px;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 600;
+}
+
+.tableau-wrapper td {
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+    vertical-align: top;
+    font-size: 0.82em;
+}
+
+.slot {
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    color: white;
+    font-size: 0.85em;
+}
+
+.slot-heure {
+    font-weight: 700;
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.slot-nom {
+    font-size: 0.85em;
+}
+
+/* BOUTONS PLANNING */
+.btn-pdf {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 15px auto;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea, #f64f59);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.4);
+}
+
+.btn-pdf:hover {
+    transform: translateY(-2px);
+}
+
+.btn-retour {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 40px auto;
+    padding: 12px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 12px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-retour:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* LEGENDE */
+.legende {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.legende-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85em;
+    color: #555;
+}
+
+.legende-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}

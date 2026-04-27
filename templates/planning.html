@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Emploi du Temps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<!-- EN-TETE -->
+<div class="planning-header">
+    <h1>📅 Mon Emploi du Temps</h1>
+    <p id="nom_etudiant"></p>
+</div>
+
+<div class="planning-container">
+
+    <!-- LEGENDE -->
+    <div class="legende">
+        <div class="legende-item">
+            <div class="legende-color" style="background:#27ae60"></div>
+            <span>Réveil / Préparation</span>
+        </div>
+        <div class="legende-item">
+            <div class="legende-color" style="background:#f39c12"></div>
+            <span>Repas</span>
+        </div>
+        <div class="legende-item">
+            <div class="legende-color" style="background:#2980b9"></div>
+            <span>Cours</span>
+        </div>
+        <div class="legende-item">
+            <div class="legende-color" style="background:#8e44ad"></div>
+            <span>Étude personnelle</span>
+        </div>
+        <div class="legende-item">
+            <div class="legende-color" style="background:#e74c3c"></div>
+            <span>Loisirs</span>
+        </div>
+        <div class="legende-item">
+            <div class="legende-color" style="background:#2c3e50"></div>
+            <span>Sommeil</span>
+        </div>
+    </div>
+
+    <!-- TABLEAU -->
+    <div class="tableau-wrapper">
+        <table id="tableau_planning">
+            <thead>
+                <tr id="entete_jours">
+                    <th>Activité</th>
+                </tr>
+            </thead>
+            <tbody id="corps_tableau">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- BOUTONS -->
+    <button class="btn-pdf" onclick="telechargerPDF()">
+        📥 Télécharger en PDF
+    </button>
+    <button class="btn-retour" onclick="window.location.href='/'">
+        ← Créer un nouveau planning
+    </button>
+
+</div>
+
+<script>
+const data = JSON.parse(localStorage.getItem('planning'));
+const jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+
+const couleurs = {
+    'reveil':      '#27ae60',
+    'repas':       '#f39c12',
+    'cours':       '#2980b9',
+    'etude':       '#8e44ad',
+    'loisirs':     '#e74c3c',
+    'sommeil_prep':'#7f8c8d',
+    'sommeil':     '#2c3e50'
+};
+
+if (data) {
+    document.getElementById('nom_etudiant').textContent =
+        `Planning de ${data.nom}`;
+
+    // Construire les en-têtes
+    const entete = document.getElementById('entete_jours');
+    jours.forEach(jour => {
+        const th = document.createElement('th');
+        th.textContent = jour;
+        entete.appendChild(th);
+    });
+
+    // Trouver le nombre max de slots
+    let maxSlots = 0;
+    jours.forEach(jour => {
+        const slots = data.planning[jour] || [];
+        if (slots.length > maxSlots) maxSlots = slots.length;
+    });
+
+    // Construire les lignes
+    const tbody = document.getElementById('corps_tableau');
+    for (let i = 0; i < maxSlots; i++) {
+        const tr = document.createElement('tr');
+
+        // Colonne numéro de slot
+        const tdNum = document.createElement('td');
+        tdNum.textContent = i + 1;
+        tdNum.style.textAlign = 'center';
+        tdNum.style.fontWeight = 'bold';
+        tdNum.style.color = '#aaa';
+        tdNum.style.fontSize = '0.8em';
+        tr.appendChild(tdNum);
+
+        jours.forEach(jour => {
+            const td = document.createElement('td');
+            const slots = data.planning[jour] || [];
+            const slot = slots[i];
+
+            if (slot) {
+                const couleur = couleurs[slot.type] || '#999';
+                td.innerHTML = `
+                    <div class="slot" style="background:${couleur}">
+                        <div class="slot-heure">
+                            ${slot.emoji} ${slot.debut} - ${slot.fin}
+                        </div>
+                        <div class="slot-nom">${slot.activite}</div>
+                    </div>
+                `;
+            }
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    }
+}
+
+// TELECHARGER PDF
+function telechargerPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('l', 'mm', 'a4'); // landscape
+
+    // Titre
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(102, 126, 234);
+    doc.text('EMPLOI DU TEMPS', 148, 15, { align: 'center' });
+
+    doc.setFontSize(12);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Etudiant(e) : ${data.nom}`, 148, 23, { align: 'center' });
+
+    // Ligne décorative
+    doc.setDrawColor(102, 126, 234);
+    doc.setLineWidth(0.8);
+    doc.line(10, 27, 287, 27);
+
+    // Tableau
+    const colonnes = ['Activite', ...jours];
+    const lignes = [];
+
+    let maxSlots = 0;
+    jours.forEach(jour => {
+        const slots = data.planning[jour] || [];
+        if (slots.length > maxSlots) maxSlots = slots.length;
+    });
+
+    for (let i = 0; i < maxSlots; i++) {
+        const ligne = [`${i + 1}`];
+        jours.forEach(jour => {
+            const slots = data.planning[jour] || [];
+            const slot = slots[i];
+            if (slot) {
+                ligne.push(`${slot.debut}-${slot.fin}\n${slot.activite}`);
+            } else {
+                ligne.push('');
+            }
+        });
+        lignes.push(ligne);
+    }
+
+    const couleursPDF = {
+        'reveil':       [39, 174, 96],
+        'repas':        [243, 156, 18],
+        'cours':        [41, 128, 185],
+        'etude':        [142, 68, 173],
+        'loisirs':      [231, 76, 60],
+        'sommeil_prep': [127, 140, 141],
+        'sommeil':      [44, 62, 80]
+    };
+
+    doc.autoTable({
+        head: [colonnes],
+        body: lignes,
+        startY: 32,
+        styles: {
+            fontSize: 7,
+            cellPadding: 3,
+            valign: 'middle',
+            halign: 'center',
+            lineColor: [220, 220, 220],
+            lineWidth: 0.3
+        },
+        headStyles: {
+            fillColor: [102, 126, 234],
+            textColor: 255,
+            fontStyle: 'bold',
+            fontSize: 9
+        },
+        columnStyles: {
+            0: { cellWidth: 12, fillColor: [240, 240, 240] }
+        },
+        didDrawCell: function(hookData) {
+            if (hookData.section === 'body' && hookData.column.index > 0) {
+                const jourIndex = hookData.column.index - 1;
+                const jour = jours[jourIndex];
+                const slots = data.planning[jour] || [];
+                const slot = slots[hookData.row.index];
+                if (slot) {
+                    const c = couleursPDF[slot.type] || [150, 150, 150];
+                    doc.setFillColor(c[0], c[1], c[2]);
+                    doc.setDrawColor(c[0], c[1], c[2]);
+                    doc.rect(
+                        hookData.cell.x + 1,
+                        hookData.cell.y + 1,
+                        2,
+                        hookData.cell.height - 2,
+                        'F'
+                    );
+                }
+            }
+        }
+    });
+
+    // Legende
+    let legendeY = doc.lastAutoTable.finalY + 8;
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(80, 80, 80);
+    doc.text('LEGENDE :', 10, legendeY);
+
+    const legende = [
+        { label: 'Réveil/Préparation', couleur: [39, 174, 96] },
+        { label: 'Repas', couleur: [243, 156, 18] },
+        { label: 'Cours', couleur: [41, 128, 185] },
+        { label: 'Étude personnelle', couleur: [142, 68, 173] },
+        { label: 'Loisirs', couleur: [231, 76, 60] },
+        { label: 'Sommeil', couleur: [44, 62, 80] }
+    ];
+
+    let lx = 35;
+    legende.forEach(item => {
+        doc.setFillColor(item.couleur[0], item.couleur[1], item.couleur[2]);
+        doc.rect(lx, legendeY - 4, 5, 5, 'F');
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(60, 60, 60);
+        doc.text(item.label, lx + 7, legendeY);
+        lx += 45;
+    });
+
+    doc.save(`emploi_du_temps_${data.nom}.pdf`);
+}
+</script>
+
+</body>
+</html>

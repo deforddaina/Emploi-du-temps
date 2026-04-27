@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Emploi du Temps</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="hero">
+    <div class="hero-content">
+        <div class="logo">🎓</div>
+        <h1>SmartPlanning</h1>
+        <p>Génère ton emploi du temps optimal en quelques secondes</p>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- Carte informations personnelles -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">👤</span>
+            <h2>Informations personnelles</h2>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nom complet</label>
+                <input type="text" id="nom" 
+                    placeholder="Ex: Marie Dupont">
+            </div>
+        </div>
+        <div class="form-row two-cols">
+            <div class="form-group">
+                <label>🌅 Heure de réveil</label>
+                <input type="time" id="heure_reveil" value="06:00">
+            </div>
+            <div class="form-group">
+                <label>🌙 Heure de coucher</label>
+                <input type="time" id="heure_coucher" value="22:00">
+            </div>
+        </div>
+    </div>
+
+    <!-- Carte cours -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">📚</span>
+            <h2>Mes cours de la semaine</h2>
+        </div>
+        <p class="card-desc">
+            Ajoute tous tes cours avec leurs horaires
+        </p>
+        <div id="liste_cours"></div>
+        <button class="btn-ajouter" onclick="ajouterCours()">
+            ➕ Ajouter un cours
+        </button>
+    </div>
+
+    <!-- Bouton générer -->
+    <button class="btn-generer" onclick="genererPlanning()">
+        🚀 Générer mon emploi du temps
+    </button>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
