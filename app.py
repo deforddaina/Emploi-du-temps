@@ -267,6 +267,7 @@ def generer_planning(heure_reveil, heure_coucher, cours):
     return planning 
 
 import os
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT',8080))
-    app.run(host='0.0.0.0', port=port, debug=False)
+port = int(os.environ.get("PORT",10000))
+
+from waitress import serve
+serve(app, host="0.0.0.0", port=port)
