@@ -268,5 +268,5 @@ def generer_planning(heure_reveil, heure_coucher, cours):
 
 import os
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT',5000))
+    port = int(os.environ.get('PORT',8080))
     app.run(host='0.0.0.0', port=port, debug=False)
