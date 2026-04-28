@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: emploi-du-temps
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: waitress-serve --port=10000 app:app
-    plan: free
