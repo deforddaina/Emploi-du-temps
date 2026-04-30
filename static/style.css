@@ -248,6 +248,23 @@ body {
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(102,126,234,0.5);
 }
+.btn-analyse-home{
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color:white;
+    border:none;
+    border-radius: 15px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(39,174,96,0,4);
+}
+.btn-analyse-home:hover {
+    transform: translateY(-3px);
+}
 
 /* PLANNING PAGE */
 .planning-header {
