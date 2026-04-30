@@ -64,11 +64,202 @@
     <button class="btn-pdf" onclick="telechargerPDF()">
         📥 Télécharger en PDF
     </button>
+    <button class="btn-analyse" onclick="afficherAnalyse()">
+    📊 Analyser mon planning
+</button>
+
+<!-- Section analyse -->
+<div id="section_analyse" style="display:none">
+
+    <div class="card" style="margin-top:20px">
+        <div class="card-header">
+            <span class="card-icon">📊</span>
+            <h2>Analyse de mon emploi du temps</h2>
+        </div>
+
+        <!-- Statistiques rapides -->
+        <div class="stats-grid" style="margin-bottom:20px">
+            <div class="stat-card" style="background:linear-gradient(135deg,#27ae60,#2ecc71)">
+                <div class="stat-number" id="stat_cours">0</div>
+                <div class="stat-label">📚 Cours par semaine</div>
+            </div>
+            <div class="stat-card" style="background:linear-gradient(135deg,#8e44ad,#9b59b6)">
+                <div class="stat-number" id="stat_etude">0h</div>
+                <div class="stat-label">✏️ Étude personnelle/semaine</div>
+            </div>
+            <div class="stat-card" style="background:linear-gradient(135deg,#e74c3c,#c0392b)">
+                <div class="stat-number" id="stat_loisirs">0h</div>
+                <div class="stat-label">🎮 Loisirs par semaine</div>
+            </div>
+            <div class="stat-card" style="background:linear-gradient(135deg,#2980b9,#3498db)">
+                <div class="stat-number" id="stat_sommeil">0h</div>
+                <div class="stat-label">🌙 Sommeil par semaine</div>
+            </div>
+        </div>
+
+        <!-- Camembert -->
+        <h3 style="color:#333;margin-bottom:15px;text-align:center">
+            Répartition du temps hebdomadaire
+        </h3>
+        <canvas id="camembert" width="300" height="300" 
+            style="display:block;margin:0 auto"></canvas>
+
+        <!-- Jours chargés -->
+        <h3 style="color:#333;margin:20px 0 15px 0">
+            Jours ayant le plus de matières
+        </h3>
+        <div id="jours_charges"></div>
+
+        <!-- Temps étude par jour -->
+        <h3 style="color:#333;margin:20px 0 15px 0">
+            Temps d'étude personnelle par jour
+        </h3>
+        <div id="etude_par_jour"></div>
+
+        <!-- Heures moyennes -->
+        <div class="two-cols" style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:20px">
+            <div style="background:#f8f9ff;border-radius:12px;padding:15px;text-align:center">
+                <div style="font-size:1.8em;font-weight:700;color:#27ae60" id="heure_reveil_display"></div>
+                <div style="color:#666;font-size:0.9em">🌅 Heure de réveil</div>
+            </div>
+            <div style="background:#f8f9ff;border-radius:12px;padding:15px;text-align:center">
+                <div style="font-size:1.8em;font-weight:700;color:#8e44ad" id="heure_coucher_display"></div>
+                <div style="color:#666;font-size:0.9em">🌙 Heure de coucher</div>
+            </div>
+        </div>
+
+    </div>
+</div>
     <button class="btn-retour" onclick="window.location.href='/'">
         ← Créer un nouveau planning
     </button>
 
 </div>
+
+<style>
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+   gap:15px;
+   margin-bottom:10px;
+}
+
+.stat-card{
+    border-radius:15px;
+    padding:25px 20px;
+    text-align:center;
+    color:white;
+    box-shadow:0 5px 15px
+rgba(0,0,0,0,.1);
+}
+
+.stat-number{
+    font-size:2.2em;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.stat-label{
+    font-size:0.85em;
+    opacity:0.95;
+    font-weight:500;
+}
+.barre-container{
+    margin-bottom:15px;
+}
+.barre-label{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+    font-size:0.9em;
+    color:#333;
+    font-weight:600;
+}
+.barre-bg{
+    background:#f0f0f0;
+    border-radius:10px;
+    height:22px;
+    overflow:hidden;
+}
+.barre{
+    height:22px;
+    border-radius:10px;
+    background:linear-gradient(135deg,#667eea,#f64f59);
+    transition:width 1s ease;
+    min-width:5%;
+}
+.btn-analyse {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 15px auto;
+    padding: 15px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 25px rgba(39,174,96,0.4);
+}
+
+.btn-analyse:hover {
+    transform: translateY(-2px);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.stat-card {
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+.stat-number {
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.8em;
+    opacity: 0.9;
+}
+
+.barre-container {
+    margin-bottom: 12px;
+}
+
+.barre-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #333;
+    font-weight: 600;
+}
+
+.barre-bg {
+    background: #f0f0f0;
+    border-radius: 10px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.barre {
+    height: 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #f64f59);
+    transition: width 1s ease;
+}
+</style>
 
 <script>
 const data = JSON.parse(localStorage.getItem('planning'));
@@ -264,6 +455,166 @@ function telechargerPDF() {
     });
 
     doc.save(`emploi_du_temps_${data.nom}.pdf`);
+}
+function afficherAnalyse() {
+    const section = document.getElementById('section_analyse');
+    section.style.display = 'block';
+    section.scrollIntoView({ behavior: 'smooth' });
+
+    const jours = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+
+    let totalCours = 0;
+    let totalEtudeMin = 0;
+    let totalLoisirsMin = 0;
+    let totalSommeilMin = 0;
+    let totalRepasMin = 0;
+    let coursParJour = {};
+    let etudeParJour = {};
+
+    jours.forEach(jour => {
+        const slots = data.planning[jour] || [];
+        let coursJour = 0;
+        let etudeJour = 0;
+
+        slots.forEach(slot => {
+            const debut = slot.debut.split(':');
+            const fin = slot.fin.split(':');
+            let duree = (parseInt(fin[0]) * 60 + parseInt(fin[1])) -
+                        (parseInt(debut[0]) * 60 + parseInt(debut[1]));
+            if (duree < 0) duree += 24 * 60;
+
+            if (slot.type === 'cours') {
+                totalCours++;
+                coursJour++;
+            }
+            if (slot.type === 'etude') {
+                totalEtudeMin += duree;
+                etudeJour += duree;
+            }
+            if (slot.type === 'loisirs') totalLoisirsMin += duree;
+            if (slot.type === 'sommeil') totalSommeilMin += duree;
+            if (slot.type === 'repas') totalRepasMin += duree;
+        });
+
+        if (coursJour > 0) coursParJour[jour] = coursJour;
+        if (etudeJour > 0) etudeParJour[jour] = Math.round(etudeJour / 60 * 10) / 10;
+    });
+
+    // Statistiques
+    document.getElementById('stat_cours').textContent = totalCours;
+    document.getElementById('stat_etude').textContent =
+        Math.round(totalEtudeMin / 60 * 10) / 10 + 'h';
+    document.getElementById('stat_loisirs').textContent =
+        Math.round(totalLoisirsMin / 60 * 10) / 10 + 'h';
+    document.getElementById('stat_sommeil').textContent =
+        Math.round(totalSommeilMin / 60 * 10) / 10 + 'h';
+
+    // Heures réveil et coucher
+    document.getElementById('heure_reveil_display').textContent =
+        data.planning['Lundi'][0].debut;
+    const dernierSlot = data.planning['Lundi'];
+    document.getElementById('heure_coucher_display').textContent =
+        dernierSlot[dernierSlot.length - 2].debut;
+
+    // CAMEMBERT
+    const canvas = document.getElementById('camembert');
+    const ctx = canvas.getContext('2d');
+    const total = totalCours * 90 + totalEtudeMin + 
+                  totalLoisirsMin + totalSommeilMin + totalRepasMin;
+
+    const segments = [
+        { label: 'Cours', valeur: totalCours * 90, couleur: '#2980b9' },
+        { label: 'Étude', valeur: totalEtudeMin, couleur: '#8e44ad' },
+        { label: 'Loisirs', valeur: totalLoisirsMin, couleur: '#e74c3c' },
+        { label: 'Sommeil', valeur: totalSommeilMin, couleur: '#2c3e50' },
+        { label: 'Repas', valeur: totalRepasMin, couleur: '#f39c12' }
+    ];
+
+    let startAngle = -Math.PI / 2;
+    const cx = 150, cy = 150, r = 120;
+
+    segments.forEach(seg => {
+        const angle = (seg.valeur / total) * 2 * Math.PI;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, r, startAngle, startAngle + angle);
+        ctx.fillStyle = seg.couleur;
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Label
+        const midAngle = startAngle + angle / 2;
+        const lx = cx + (r * 0.65) * Math.cos(midAngle);
+        const ly = cy + (r * 0.65) * Math.sin(midAngle);
+        const pct = Math.round((seg.valeur / total) * 100);
+        if (pct > 3) {
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 11px Poppins';
+            ctx.textAlign = 'center';
+            ctx.fillText(pct + '%', lx, ly);
+        }
+        startAngle += angle;
+    });
+
+    // Légende camembert
+    const legende = document.createElement('div');
+    legende.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:15px';
+    segments.forEach(seg => {
+        const pct = Math.round((seg.valeur / total) * 100);
+        legende.innerHTML += `
+            <div style="display:flex;align-items:center;gap:5px;font-size:0.85em">
+                <div style="width:14px;height:14px;border-radius:3px;
+                    background:${seg.couleur}"></div>
+                <span>${seg.label} (${pct}%)</span>
+            </div>
+        `;
+    });
+    canvas.parentNode.insertBefore(legende, canvas.nextSibling);
+
+    // Jours chargés
+    const joursDiv = document.getElementById('jours_charges');
+    const joursTriés = Object.entries(coursParJour)
+        .sort((a, b) => b[1] - a[1]);
+    const maxCours = joursTriés[0] ? joursTriés[0][1] : 1;
+    joursTriés.forEach(([jour, nb]) => {
+        const pct = (nb / maxCours) * 100;
+        joursDiv.innerHTML += `
+            <div class="barre-container">
+                <div class="barre-label">
+                    <span>📆 ${jour}</span>
+                    <span>${nb} cours</span>
+                </div>
+                <div class="barre-bg">
+                    <div class="barre" style="width:${pct}%"></div>
+                </div>
+            </div>
+        `;
+    });
+
+    // Étude par jour
+    const etudeDiv = document.getElementById('etude_par_jour');
+    const etudeTriée = Object.entries(etudeParJour)
+        .sort((a, b) => b[1] - a[1]);
+    const maxEtude = etudeTriée[0] ? etudeTriée[0][1] : 1;
+    etudeTriée.forEach(([jour, heures]) => {
+        const pct = (heures / maxEtude) * 100;
+        etudeDiv.innerHTML += `
+            <div class="barre-container">
+                <div class="barre-label">
+                    <span>✏️ ${jour}</span>
+                    <span>${heures}h</span>
+                </div>
+                <div class="barre-bg">
+                    <div class="barre" 
+                        style="width:${pct}%;
+                        background:linear-gradient(135deg,#8e44ad,#9b59b6)">
+                    </div>
+                </div>
+            </div>
+        `;
+    });
 }
 </script>
 

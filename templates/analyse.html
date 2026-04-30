@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPlanning - Analyse des données</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- BARRE DE NAVIGATION -->
+<nav class="navbar">
+    <div class="nav-brand">🎓 SmartPlanning</div>
+    <div class="nav-links">
+        <a href="/" class="nav-link">🏠 Accueil</a>
+        <a href="/analyse" class="nav-link active">📊 Analyse</a>
+    </div>
+</nav>
+
+<div class="planning-header">
+    <h1>📊 Analyse Descriptive des Données</h1>
+    <p>Statistiques automatiques basées sur les données des étudiants</p>
+</div>
+
+<div class="planning-container">
+
+    <!-- Chargement -->
+    <div id="loading" style="text-align:center; padding:40px;">
+        <p style="color:#667eea; font-size:1.2em;">
+            ⏳ Chargement des données...
+        </p>
+    </div>
+
+    <!-- Contenu principal (caché au départ) -->
+    <div id="contenu_analyse" style="display:none">
+
+        <!-- Statistiques générales -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📈</span>
+                <h2>Statistiques générales</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card" style="background:linear-gradient(135deg,#27ae60,#2ecc71)">
+                    <div class="stat-number" id="total_etudiants">0</div>
+                    <div class="stat-label">👥 Étudiants enregistrés</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#2980b9,#3498db)">
+                    <div class="stat-number" id="moyenne_cours">0</div>
+                    <div class="stat-label">📚 Cours moyens par étudiant</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#f39c12,#f1c40f)">
+                    <div class="stat-number" id="reveil_moyen">--:--</div>
+                    <div class="stat-label">🌅 Heure de réveil moyenne</div>
+                </div>
+                <div class="stat-card" style="background:linear-gradient(135deg,#8e44ad,#9b59b6)">
+                    <div class="stat-number" id="coucher_moyen">--:--</div>
+                    <div class="stat-label">🌙 Heure de coucher moyenne</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matières populaires -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📚</span>
+                <h2>Matières les plus étudiées</h2>
+            </div>
+            <div id="matieres_container">
+                <p style="color:#888">Aucune donnée disponible</p>
+            </div>
+        </div>
+
+        <!-- Jours chargés -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-icon">📅</span>
+                <h2>Jours de cours les plus chargés</h2>
+            </div>
+            <div id="jours_container">
+                <p style="color:#888">Aucune donnée disponible</p>
+            </div>
+        </div>
+
+        <!-- Message si aucune donnée -->
+        <div id="no_data" style="display:none">
+            <div class="card" style="text-align:center; padding:40px;">
+                <p style="font-size:3em">📭</p>
+                <h3 style="color:#667eea">Aucune donnée disponible</h3>
+                <p style="color:#888">
+                    Générez d'abord un emploi du temps pour voir les statistiques
+                </p>
+                <button class="btn-generer" 
+                    style="max-width:300px; margin:20px auto 0 auto"
+                    onclick="window.location.href='/'">
+                    🚀 Créer un emploi du temps
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="btn-retour" onclick="window.location.href='/'">
+        ← Retour à l'accueil
+    </button>
+
+</div>
+
+<style>
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.stat-card {
+    border-radius: 15px;
+    padding: 25px 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-number {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 0.85em;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.barre-container {
+    margin-bottom: 15px;
+}
+
+.barre-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 0.9em;
+    color: #333;
+    font-weight: 600;
+}
+
+.barre-bg {
+    background: #f0f0f0;
+    border-radius: 10px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.barre {
+    height: 22px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #f64f59);
+    transition: width 1s ease;
+    min-width: 5%;
+}
+</style>
+
+<script>
+fetch('/statistiques')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('contenu_analyse').style.display = 'block';
+
+        if (data.total_etudiants === 0) {
+            document.getElementById('no_data').style.display = 'block';
+            return;
+        }
+
+        // Statistiques générales
+        document.getElementById('total_etudiants').textContent =
+            data.total_etudiants;
+        document.getElementById('moyenne_cours').textContent =
+            data.moyenne_cours;
+        document.getElementById('reveil_moyen').textContent =
+            data.reveil_moyen;
+        document.getElementById('coucher_moyen').textContent =
+            data.coucher_moyen;
+
+        // Matières populaires
+        const matieresCont = document.getElementById('matieres_container');
+        if (data.matieres_populaires.length > 0) {
+            matieresCont.innerHTML = '';
+            const max = data.matieres_populaires[0].nombre;
+            data.matieres_populaires.forEach(m => {
+                const pct = Math.max((m.nombre / max) * 100, 5);
+                matieresCont.innerHTML += `
+                    <div class="barre-container">
+                        <div class="barre-label">
+                            <span>📖 ${m.matiere}</span>
+                            <span>${m.nombre} cours</span>
+                        </div>
+                        <div class="barre-bg">
+                            <div class="barre" style="width:${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Jours chargés
+        const joursCont = document.getElementById('jours_container');
+        if (data.jours_charges.length > 0) {
+            joursCont.innerHTML = '';
+            const max = data.jours_charges[0].nombre;
+            const couleurs = {
+                'Lundi': '#3498db',
+                'Mardi': '#e74c3c',
+                'Mercredi': '#2ecc71',
+                'Jeudi': '#f39c12',
+                'Vendredi': '#9b59b6',
+                'Samedi': '#1abc9c',
+                'Dimanche': '#e67e22'
+            };
+            data.jours_charges.forEach(j => {
+                const pct = Math.max((j.nombre / max) * 100, 5);
+                const couleur = couleurs[j.jour] || '#667eea';
+                joursCont.innerHTML += `
+                    <div class="barre-container">
+                        <div class="barre-label">
+                            <span>📆 ${j.jour}</span>
+                            <span>${j.nombre} cours</span>
+                        </div>
+                        <div class="barre-bg">
+                            <div class="barre" 
+                                style="width:${pct}%;
+                                background:${couleur}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    })
+    .catch(() => {
+        document.getElementById('loading').innerHTML =
+            '<p style="color:red">❌ Erreur de chargement des données</p>';
+    });
+</script>
+
+</body>
+</html>

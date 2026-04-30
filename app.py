@@ -266,8 +266,244 @@ def generer_planning(heure_reveil, heure_coucher, cours):
 
     return planning 
 
-import os
-port = int(os.environ.get("PORT",10000))
+@app.route('/statistiques')
+def statistiques():
+    conn = get_db()
+    cursor = conn.cursor()
 
-from waitress import serve
-serve(app, host="0.0.0.0", port=port)
+    cursor.execute('SELECT COUNT(*) as total FROM etudiants')
+    total_etudiants = cursor.fetchone()[0]
+
+    cursor.execute('''
+        SELECT matiere, COUNT(*) as nombre
+        FROM cours
+        GROUP BY matiere
+        ORDER BY nombre DESC
+        LIMIT 5
+    ''')
+    matieres = [{'matiere': row[0], 'nombre': row[1]}
+                for row in cursor.fetchall()]
+
+    cursor.execute('''
+        SELECT jour, COUNT(*) as nombre
+        FROM cours
+        GROUP BY jour
+        ORDER BY nombre DESC
+    ''')
+    jours = [{'jour': row[0], 'nombre': row[1]}
+             for row in cursor.fetchall()]
+
+    cursor.execute('SELECT heure_reveil FROM etudiants')
+    reveils = cursor.fetchall()
+    if reveils:
+        total_minutes = sum(
+            int(r[0].split(':')[0]) * 60 + int(r[0].split(':')[1])
+            for r in reveils
+        )
+        moy_minutes = total_minutes // len(reveils)
+        reveil_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        reveil_moyen = "N/A"
+
+    cursor.execute('SELECT heure_coucher FROM etudiants')
+    couchers = cursor.fetchall()
+    if couchers:
+        total_minutes = sum(
+            int(c[0].split(':')[0]) * 60 + int(c[0].split(':')[1])
+            for c in couchers
+        )
+        moy_minutes = total_minutes // len(couchers)
+        coucher_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        coucher_moyen = "N/A"
+
+    cursor.execute('''
+        SELECT AVG(nb_cours) FROM (
+            SELECT etudiant_id, COUNT(*) as nb_cours
+            FROM cours
+            GROUP BY etudiant_id
+        )
+    ''')
+    moy_cours = cursor.fetchone()[0]
+    moy_cours = round(moy_cours, 1) if moy_cours else 0
+    conn.close()
+
+    return jsonify({
+        'total_etudiants': total_etudiants,
+        'matieres_populaires': matieres,
+        'jours_charges': jours,
+        'reveil_moyen': reveil_moyen,
+        'coucher_moyen': coucher_moyen,
+        'moyenne_cours': moy_cours
+    })
+
+
+@app.route('/analyse')
+def analyse():
+    return render_template('analyse.html')
+
+
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=False)@app.route('/statistiques')
+def statistiques():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) as total FROM etudiants')
+    total_etudiants = cursor.fetchone()[0]
+
+    cursor.execute('''
+        SELECT matiere, COUNT(*) as nombre
+        FROM cours
+        GROUP BY matiere
+        ORDER BY nombre DESC
+        LIMIT 5
+    ''')
+    matieres = [{'matiere': row[0], 'nombre': row[1]}
+                for row in cursor.fetchall()]
+
+    cursor.execute('''
+        SELECT jour, COUNT(*) as nombre
+        FROM cours
+        GROUP BY jour
+        ORDER BY nombre DESC
+    ''')
+    jours = [{'jour': row[0], 'nombre': row[1]}
+             for row in cursor.fetchall()]
+
+    cursor.execute('SELECT heure_reveil FROM etudiants')
+    reveils = cursor.fetchall()
+    if reveils:
+        total_minutes = sum(
+            int(r[0].split(':')[0]) * 60 + int(r[0].split(':')[1])
+            for r in reveils
+        )
+        moy_minutes = total_minutes // len(reveils)
+        reveil_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        reveil_moyen = "N/A"
+
+    cursor.execute('SELECT heure_coucher FROM etudiants')
+    couchers = cursor.fetchall()
+    if couchers:
+        total_minutes = sum(
+            int(c[0].split(':')[0]) * 60 + int(c[0].split(':')[1])
+            for c in couchers
+        )
+        moy_minutes = total_minutes // len(couchers)
+        coucher_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        coucher_moyen = "N/A"
+
+    cursor.execute('''
+        SELECT AVG(nb_cours) FROM (
+            SELECT etudiant_id, COUNT(*) as nb_cours
+            FROM cours
+            GROUP BY etudiant_id
+        )
+    ''')
+    moy_cours = cursor.fetchone()[0]
+    moy_cours = round(moy_cours, 1) if moy_cours else 0
+    conn.close()
+
+    return jsonify({
+        'total_etudiants': total_etudiants,
+        'matieres_populaires': matieres,
+        'jours_charges': jours,
+        'reveil_moyen': reveil_moyen,
+        'coucher_moyen': coucher_moyen,
+        'moyenne_cours': moy_cours
+    })
+
+
+@app.route('/analyse')
+def analyse():
+    return render_template('analyse.html')
+
+
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=False)@app.route('/statistiques')
+def statistiques():
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT COUNT(*) as total FROM etudiants')
+    total_etudiants = cursor.fetchone()[0]
+
+    cursor.execute('''
+        SELECT matiere, COUNT(*) as nombre
+        FROM cours
+        GROUP BY matiere
+        ORDER BY nombre DESC
+        LIMIT 5
+    ''')
+    matieres = [{'matiere': row[0], 'nombre': row[1]}
+                for row in cursor.fetchall()]
+
+    cursor.execute('''
+        SELECT jour, COUNT(*) as nombre
+        FROM cours
+        GROUP BY jour
+        ORDER BY nombre DESC
+    ''')
+    jours = [{'jour': row[0], 'nombre': row[1]}
+             for row in cursor.fetchall()]
+
+    cursor.execute('SELECT heure_reveil FROM etudiants')
+    reveils = cursor.fetchall()
+    if reveils:
+        total_minutes = sum(
+            int(r[0].split(':')[0]) * 60 + int(r[0].split(':')[1])
+            for r in reveils
+        )
+        moy_minutes = total_minutes // len(reveils)
+        reveil_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        reveil_moyen = "N/A"
+
+    cursor.execute('SELECT heure_coucher FROM etudiants')
+    couchers = cursor.fetchall()
+    if couchers:
+        total_minutes = sum(
+            int(c[0].split(':')[0]) * 60 + int(c[0].split(':')[1])
+            for c in couchers
+        )
+        moy_minutes = total_minutes // len(couchers)
+        coucher_moyen = f"{moy_minutes // 60:02d}:{moy_minutes % 60:02d}"
+    else:
+        coucher_moyen = "N/A"
+
+    cursor.execute('''
+        SELECT AVG(nb_cours) FROM (
+            SELECT etudiant_id, COUNT(*) as nb_cours
+            FROM cours
+            GROUP BY etudiant_id
+        )
+    ''')
+    moy_cours = cursor.fetchone()[0]
+    moy_cours = round(moy_cours, 1) if moy_cours else 0
+    conn.close()
+
+    return jsonify({
+        'total_etudiants': total_etudiants,
+        'matieres_populaires': matieres,
+        'jours_charges': jours,
+        'reveil_moyen': reveil_moyen,
+        'coucher_moyen': coucher_moyen,
+        'moyenne_cours': moy_cours
+    })
+
+
+@app.route('/analyse')
+def analyse():
+    return render_template('analyse.html')
+
+
+import os
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port, debug=False)
